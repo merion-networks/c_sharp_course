@@ -1,0 +1,25 @@
+﻿[
+    {
+      "Name": "Разработка на C#",
+      "Duration": 12,
+      "Topics": [
+        "Основы C#",
+        "ООП в C#",
+        "LINQ",
+        "Асинхронное программирование"
+      ],
+      "Students": []
+    },
+    {
+      "Name": "Web-разработка",
+      "Duration": 10,
+      "Topics": [
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "React",
+        "Node.js"
+      ],
+      "Students": []
+    }
+  ]
