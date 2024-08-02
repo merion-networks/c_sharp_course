@@ -1,7 +1,7 @@
 ﻿using System.Reflection.PortableExecutable;
 using System.Text.Json;
 
-namespace MenegerAcademy
+namespace MenagerAcademy
 {
 
     public record Student(string Name, int Age);

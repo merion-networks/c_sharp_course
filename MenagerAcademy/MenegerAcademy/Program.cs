@@ -1,4 +1,4 @@
-﻿using MenegerAcademy;
+﻿using MenagerAcademy;
 
 class Program
 {
