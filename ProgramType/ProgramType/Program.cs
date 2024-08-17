@@ -9,7 +9,15 @@
 
 //Неявная типизация
 
-var age  = 10; 
+using OperationLibrary.Logic;
+using OperationLibrary.Operation;
+using ProgramType.ReferenceType;
+using ProgramType.SpecialType;
+using ProgramType.ValuesType;
+using VariablesLibrary;
+
+
+var age = 10;
 var name = "name";
 
 const int maxInt = int.MaxValue;
@@ -27,4 +35,30 @@ int y = (int)d; // Явное преобразование типов из doubl
 //Числовые разделители 
 
 int billion = 1_000_000_000;
-double  avagadro = 6.022_140_73e23;
+double avagadro = 6.022_140_73e23;
+
+
+
+//var enumType = new EnumType();
+//var structType = new StructType();
+//var tuples = new Tuples();
+//var nullableType = new NullableType();
+
+//var variable = new Variable();
+//var pecord = new Record();
+
+
+//Патерны сопоставления 
+
+object massege = "Hello, academy!";
+
+if (massege is string { Length: > 5 } str)
+{
+    Console.WriteLine($"Строка длинной больше 5 - {str}");
+}
+
+//ArithmeticOperation arithmeticOperation = new ArithmeticOperation();
+//TernaryOperator ternaryOperator = new TernaryOperator();
+
+ArrayType arrayType = new ArrayType();
+

@@ -1,10 +1,16 @@
-﻿namespace ProgramType.Type
+﻿namespace ProgramType.ReferenceType
 {
     /// <summary>
     /// Строковый тип данных
     /// </summary>
     public class StringType
     {
+        public enum ThreeDaysOfWeek
+        {
+            Monday,
+            Tuesday,
+            Wednesday
+        }
 
         public void Create()
         {
