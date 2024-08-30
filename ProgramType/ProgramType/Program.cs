@@ -9,6 +9,8 @@
 
 //Неявная типизация
 
+using CycleLibrary;
+using IfElseLibrary;
 using OperationLibrary.Logic;
 using OperationLibrary.Operation;
 using ProgramType.ReferenceType;
@@ -37,8 +39,6 @@ int y = (int)d; // Явное преобразование типов из doubl
 int billion = 1_000_000_000;
 double avagadro = 6.022_140_73e23;
 
-
-
 //var enumType = new EnumType();
 //var structType = new StructType();
 //var tuples = new Tuples();
@@ -50,15 +50,29 @@ double avagadro = 6.022_140_73e23;
 
 //Патерны сопоставления 
 
-object massege = "Hello, academy!";
+//object massege = "Hello, academy!";
 
-if (massege is string { Length: > 5 } str)
-{
-    Console.WriteLine($"Строка длинной больше 5 - {str}");
-}
+//if (massege is string { Length: > 5 } str)
+//{
+//    Console.WriteLine($"Строка длинной больше 5 - {str}");
+//}
 
 //ArithmeticOperation arithmeticOperation = new ArithmeticOperation();
 //TernaryOperator ternaryOperator = new TernaryOperator();
+//ArrayType arrayType = new ArrayType();
+//ConstructionIfElse tempIfElse = new ConstructionIfElse();
+//ConstractionSwitch constractionSwitch = new ConstractionSwitch();
+//constractionSwitch.MappingToTipes();
+//constractionSwitch.Exapmle();
+//constractionSwitch.ExampleWhen();
 
-ArrayType arrayType = new ArrayType();
+//ForCycle forCycle = new ForCycle();
+//ForeachCycle foreachCycle = new ForeachCycle();
+//WhileCycle whileCycle = new WhileCycle();
+//DoWhileCycle doWhileCycle = new DoWhileCycle();
+
+GameClass gameClass = new GameClass();
+gameClass.Start();
+
+
 
