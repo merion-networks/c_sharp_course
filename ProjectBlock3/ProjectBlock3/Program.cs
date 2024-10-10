@@ -8,6 +8,7 @@ using PolymorphismLibrary.Service;
 using PracticLibrary;
 using PracticLibrary.Interface;
 using PracticLibrary.Model;
+using System.Linq;
 
 //BankAccount bankAccount = new BankAccount();
 //Person person  = new Person("Василий", 30);
@@ -183,4 +184,4 @@ Console.WriteLine(number.Value);
 
 
 var calcDynamic  = new GenericDynamicCalculation<Number>();
-Number number1 = calcDynamic.Add(n1, n2); 
+Number number1 = calcDynamic.Add(n1, n2);
