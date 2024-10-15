@@ -9,7 +9,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CollectionLibrary\CollectionLibrary.csproj" />
+    <ProjectReference Include="..\FileLibrary\FileLibrary.csproj" />
     <ProjectReference Include="..\GenericLibrary\GenericLibrary.csproj" />
+    <ProjectReference Include="..\LINQLibrary\LINQLibrary.csproj" />
   </ItemGroup>
 
 </Project>
