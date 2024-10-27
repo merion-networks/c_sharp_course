@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnonymousLibrary\AnonymousLibrary.csproj" />
     <ProjectReference Include="..\DeligateLibrary\DeligateLibrary.csproj" />
+    <ProjectReference Include="..\GenericDelegateLibrary\GenericDelegateLibrary.csproj" />
   </ItemGroup>
 
 </Project>
