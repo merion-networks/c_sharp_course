@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "AppUI (Package)": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
+    },
+    "AppUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
