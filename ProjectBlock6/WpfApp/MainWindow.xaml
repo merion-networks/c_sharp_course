@@ -13,7 +13,8 @@
         <TextBox x:Name="txt" HorizontalAlignment="Left" Margin="21,64,0,0" TextWrapping="Wrap" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="535"/>
         <TextBox x:Name="txt2" HorizontalAlignment="Left" Margin="21,98,0,0" TextWrapping="Wrap" Text="{Binding AnotherTitle, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="535"/>
         <TextBox x:Name="txt_log" HorizontalAlignment="Center" Margin="0,319,0,0" TextWrapping="Wrap" Text="{Binding LogError, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="800"/>
-        <TextBox HorizontalAlignment="Left" Margin="21,142,0,0" TextWrapping="Wrap" Text="{Binding ExampleMultiAsync, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="535" Height="155"/>
+        <TextBox HorizontalAlignment="Left" Margin="21,142,0,0" TextWrapping="Wrap" Text="{Binding ExampleMultiAsync, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="379" Height="155"/>
+        <TextBox HorizontalAlignment="Left" Margin="405,142,0,0" TextWrapping="Wrap" Text="{Binding ExampleMultiEndAsync, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="379" Height="155"/>
 
     </Grid>
 </Window>

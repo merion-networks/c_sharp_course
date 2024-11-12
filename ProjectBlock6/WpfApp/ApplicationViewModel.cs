@@ -47,6 +47,17 @@ namespace WpfApp
             }
         }
 
+        private string exampleMultiEndAsync;
+        public string ExampleMultiEndAsync
+        {
+            get { return exampleMultiEndAsync; }
+            set
+            {
+                exampleMultiEndAsync = value;
+                OnPropertyChanged(nameof(ExampleMultiEndAsync));
+            }
+        }
+
         private string lgError;
         public string LogError
         {
@@ -60,10 +71,14 @@ namespace WpfApp
 
         private readonly object lockObject = new object();
 
+        private ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim();
+
         private int sharedResource = 0;
 
+        private List<int> dataInts = new List<int>();
+
         private List<string> apiUrl = new List<string>
-        { 
+        {
             "https://macademy.free.beeceptor.com/todos", "https://macademy.free.beeceptor.com/data", "https://macademy.free.beeceptor.com/", "https://macademy.free.beeceptor.com/", "https://macademy.free.beeceptor.com/", "https://macademy.free.beeceptor.com/"
         };
 
@@ -138,7 +153,47 @@ namespace WpfApp
             //// ExampleCancellation();
             ////ExampleExceptionTaskAsync();
             ///
-            await OnDataProcessedAsync();
+            //await OnDataProcessedAsync();
+
+            ExampleParallelClassAsync();
+        }
+
+
+        private void AddData(int value)
+        {
+            readerWriterLock.EnterWriteLock();
+            try
+            {
+                dataInts.Add(value);
+            }
+            finally
+            {
+                readerWriterLock.EnterWriteLock();
+            }
+        }
+
+        private int[] GetData()
+        {
+            readerWriterLock.EnterReadLock();
+            try
+            {
+                return dataInts.ToArray();
+            }
+            finally
+            {
+                readerWriterLock.ExitReadLock();
+            }
+        }
+
+        private void ExampleParallelClassAsync()
+        {
+            Parallel.For(0, 10, i =>
+             {
+                 ExampleMultiAsync += $"Итерация {i} начала выполнение \n";
+                 Task.Delay(1000);
+                 ExampleMultiEndAsync += $"Итерация {i} завершена\n";
+
+             });
         }
 
         private async void DoAnotherSomething()
@@ -173,12 +228,33 @@ namespace WpfApp
             }
         }
 
+        private void DoWorkMonitor()
+        {
+            if (Monitor.TryEnter(lockObject, TimeSpan.FromSeconds(1)))
+            {
+                try
+                {
+                    sharedResource++;
+                }
+                finally
+                {
+                    Monitor.Exit(lockObject);
+                }
+            }
+            else
+            {
+                LogError = "Не удалось получить блокировку!";
+            }
+        }
+
+
+
         public async Task WriteTextToFileAsync(string path, string content)
         {
             byte[] enicodeText = Encoding.Unicode.GetBytes(content);
 
-            using (FileStream fs = new FileStream(path, 
-                FileMode.Create, FileAccess.Write, FileShare.None, 
+            using (FileStream fs = new FileStream(path,
+                FileMode.Create, FileAccess.Write, FileShare.None,
                 bufferSize: 4096, useAsync: true))
             {
                 await fs.WriteAsync(enicodeText, 0, enicodeText.Length);
@@ -187,17 +263,17 @@ namespace WpfApp
 
         public async Task<string> ReadTextFromFileAsync(string path)
         {
-            if(!File.Exists(path))
+            if (!File.Exists(path))
                 throw new FileNotFoundException($"Не найден - {path}");
 
-            using(FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
             {
                 StringBuilder sb = new StringBuilder();
 
                 byte[] buffer = new byte[0x1000];
 
                 int numRead;
-                while((numRead = await fs.ReadAsync(buffer, 0, buffer.Length)) != 0)
+                while ((numRead = await fs.ReadAsync(buffer, 0, buffer.Length)) != 0)
                 {
                     string text = Encoding.Unicode.GetString(buffer, 0, numRead);
                     sb.Append(text);
@@ -231,6 +307,19 @@ namespace WpfApp
 
 
             return tcs.Task;
+        }
+
+
+        private void DoWorkMutex()
+        {
+            using (var mutex = new Mutex(false, "Global\\MyMutex"))
+            {
+                if (mutex.WaitOne(TimeSpan.FromSeconds(5), false))
+                {
+                    Title = "Приложение запущено!";
+                    return;
+                }
+            }
         }
 
         public async Task ProcessUrlsWhithLimitAsync(List<string> urls, int maxDegreeOfParallelism)
