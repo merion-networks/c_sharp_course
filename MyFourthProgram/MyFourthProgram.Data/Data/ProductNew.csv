@@ -1,0 +1,101 @@
+Id,Name,Category,Price,Quantity,ManufactureDate
+1,Super Widget 111,Electronics,123.45,250,10.04.2020
+2,Mega Gadget 222,Clothing,78.99,150,15.07.2021
+3,Ultra Device 333,Toys,34.50,350,22.03.2022
+4,Pro Item 444,Books,15.75,80,10.01.2023
+5,Eco Product 555,Home & Kitchen,59.99,450,05.08.2020
+6,Smart Thing 666,Sports,89.99,300,18.10.2021
+7,Power Tool 777,Beauty,29.99,200,25.05.2022
+8,Flex Accessory 888,Food,сен.99,500,12.02.2023
+9,Max Gear 999,Health,199.99,150,30.11.2020
+10,Lite Apparatus 100,Garden,49.99,275,01.06.2021
+11,Super Widget 112,Electronics,132.99,310,15.03.2020
+12,Mega Gadget 223,Clothing,88.50,420,20.04.2021
+13,Ultra Device 334,Toys,24.99,230,11.06.2022
+14,Pro Item 445,Books,18.20,95,09.05.2023
+15,Eco Product 556,Home & Kitchen,67.49,390,07.07.2020
+16,Smart Thing 667,Sports,99.95,180,25.08.2021
+17,Power Tool 778,Beauty,35.99,270,16.09.2022
+18,Flex Accessory 889,Food,дек.49,510,30.03.2023
+19,Max Gear 990,Health,219.89,145,27.03.2020
+20,Lite Apparatus 101,Garden,55.00,290,17.01.2021
+21,Super Widget 213,Electronics,125.00,260,19.05.2020
+22,Mega Gadget 324,Clothing,92.75,410,22.02.2021
+23,Ultra Device 435,Toys,27.50,220,14.04.2022
+24,Pro Item 546,Books,20.99,105,01.03.2023
+25,Eco Product 657,Home & Kitchen,72.35,380,13.06.2020
+26,Smart Thing 768,Sports,85.00,190,07.09.2021
+27,Power Tool 879,Beauty,38.49,260,10.01.2022
+28,Flex Accessory 990,Food,14.99,520,15.07.2023
+29,Max Gear 101,Health,205.00,155,18.09.2020
+30,Lite Apparatus 212,Garden,60.25,300,29.05.2021
+31,Super Widget 314,Electronics,127.49,270,11.12.2020
+32,Mega Gadget 425,Clothing,79.80,400,20.07.2021
+33,Ultra Device 536,Toys,30.25,210,05.08.2022
+34,Pro Item 647,Books,22.49,115,19.09.2023
+35,Eco Product 758,Home & Kitchen,65.75,370,08.11.2020
+36,Smart Thing 869,Sports,93.50,200,26.10.2021
+37,Power Tool 970,Beauty,33.20,250,17.02.2022
+38,Flex Accessory 181,Food,16.59,530,12.04.2023
+39,Max Gear 292,Health,189.99,165,04.04.2020
+40,Lite Apparatus 303,Garden,70.00,310,14.06.2021
+41,Super Widget 415,Electronics,130.00,280,23.01.2020
+42,Mega Gadget 526,Clothing,85.75,390,12.08.2021
+43,Ultra Device 637,Toys,32.00,200,01.05.2022
+44,Pro Item 748,Books,25.49,125,15.08.2023
+45,Eco Product 859,Home & Kitchen,70.00,360,19.10.2020
+46,Smart Thing 960,Sports,90.80,210,30.11.2021
+47,Power Tool 071,Beauty,36.99,240,24.03.2022
+48,Flex Accessory 182,Food,18.25,540,20.06.2023
+49,Max Gear 293,Health,195.00,175,28.02.2020
+50,Lite Apparatus 404,Garden,65.50,320,08.04.2021
+51,Super Widget 516,Electronics,128.75,290,14.09.2020
+52,Mega Gadget 627,Clothing,83.25,380,05.05.2021
+53,Ultra Device 738,Toys,29.75,190,18.07.2022
+54,Pro Item 849,Books,23.49,135,22.02.2023
+55,Eco Product 950,Home & Kitchen,68.50,350,26.08.2020
+56,Smart Thing 061,Sports,87.99,220,29.12.2021
+57,Power Tool 172,Beauty,31.49,230,21.09.2022
+58,Flex Accessory 283,Food,17.99,550,14.05.2023
+59,Max Gear 394,Health,199.75,185,07.05.2020
+60,Lite Apparatus 505,Garden,62.25,330,16.03.2021
+61,Super Widget 617,Electronics,135.50,300,28.06.2020
+62,Mega Gadget 728,Clothing,90.50,370,02.09.2021
+63,Ultra Device 839,Toys,31.25,180,03.10.2022
+64,Pro Item 940,Books,21.49,145,26.05.2023
+65,Eco Product 051,Home & Kitchen,66.99,340,31.07.2020
+66,Smart Thing 162,Sports,91.50,230,09.02.2021
+67,Power Tool 273,Beauty,34.75,220,27.04.2022
+68,Flex Accessory 384,Food,19.49,560,29.01.2023
+69,Max Gear 495,Health,201.50,195,24.08.2020
+70,Lite Apparatus 606,Garden,67.75,340,05.11.2021
+71,Super Widget 718,Electronics,126.25,310,17.11.2020
+72,Mega Gadget 829,Clothing,81.99,360,10.06.2021
+73,Ultra Device 930,Toys,28.99,170,14.01.2022
+74,Pro Item 041,Books,19.49,155,01.04.2023
+75,Eco Product 152,Home & Kitchen,64.75,330,13.02.2020
+76,Smart Thing 263,Sports,88.50,240,20.03.2021
+77,Power Tool 374,Beauty,37.49,210,08.08.2022
+78,Flex Accessory 485,Food,15.99,570,03.07.2023
+79,Max Gear 596,Health,193.25,205,22.10.2020
+80,Lite Apparatus 607,Garden,69.00,350,30.08.2021
+81,Super Widget 819,Electronics,131.49,320,05.03.2020
+82,Mega Gadget 920,Clothing,86.25,350,28.01.2021
+83,Ultra Device 021,Toys,26.75,160,19.02.2022
+84,Pro Item 122,Books,24.99,165,05.02.2023
+85,Eco Product 223,Home & Kitchen,69.50,320,20.09.2020
+86,Smart Thing 324,Sports,92.25,250,03.12.2021
+87,Power Tool 425,Beauty,32.99,200,28.11.2022
+88,Flex Accessory 526,Food,13.49,580,08.06.2023
+89,Max Gear 627,Health,197.00,215,16.05.2020
+90,Lite Apparatus 728,Garden,63.75,360,25.04.2021
+91,Super Widget 920,Electronics,129.99,330,23.12.2020
+92,Mega Gadget 021,Clothing,90.00,340,11.09.2021
+93,Ultra Device 122,Toys,29.50,150,30.05.2022
+94,Pro Item 223,Books,26.25,175,17.03.2023
+95,Eco Product 324,Home & Kitchen,66.50,310,09.06.2020
+96,Smart Thing 425,Sports,94.99,260,23.07.2021
+97,Power Tool 526,Beauty,35.75,190,19.08.2022
+98,Flex Accessory 627,Food,18.75,590,04.05.2023
+99,Max Gear 728,Health,204.99,225,30.01.2020
+100,Lite Apparatus 829,Garden,61.25,370,17.06.2021

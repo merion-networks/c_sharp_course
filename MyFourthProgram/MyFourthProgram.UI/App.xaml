@@ -1,0 +1,10 @@
+﻿<Application x:Class="MyFourthProgram.UI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MyFourthProgram.UI"
+             xmlns:helper="clr-namespace:MyFourthProgram.UI.Helper"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <helper:DirectionToStringConverter x:Key="DirectionToStringConverter"/>
+    </Application.Resources>
+</Application>
