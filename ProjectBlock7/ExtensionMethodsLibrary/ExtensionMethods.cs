@@ -46,7 +46,7 @@ namespace ExtensionMethodsLibrary
             FileInfo file = new FileInfo("source.txt");
             if (file.Exists)
             {
-                file.CopyToDirectory(@"C:\Users\79191\source\repos\MerionAcademy\ProjectBlock7\ProjectBlock7\bin\Debug\net8.0\temp");
+             //   file.CopyToDirectory(@"C:\Users\79191\source\repos\MerionAcademy\ProjectBlock7\ProjectBlock7\bin\Debug\net8.0\temp");
             }
         }
 
