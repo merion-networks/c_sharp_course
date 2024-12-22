@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProjectBlock9.Web</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ProjectBlock9.Web.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">IdentityApp</a>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="@Url.Action("Index", "Home")">Главная</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="#">@User.Identity.Name</a>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-action="Logout" asp-controller="Account" method="post">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">Выход</button>
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-action="AddRole" asp-controller="Account" method="post">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">AddRole</button>
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-action="Index" asp-controller="User" method="post">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">User</button>
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-action="Index" asp-controller="Tasks" method="post">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">Tasks</button>
+                                </form>
+                            </li>
+
+                            <li class="nav-item">
+                                <form asp-action="SpaceXInfo" asp-controller="Home" method="post">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">SpaceXInfo</button>
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-action="WeatherForecast" asp-controller="Home" method="post">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">WeatherForecast</button>
+                                </form>
+                            </li>
+                            @if (User.IsInRole("Администратор"))
+                            {
+                                <li class="nav-item">
+                                    <form asp-action="AdminDashboard" asp-controller="Account" method="post">
+                                        <button type="submit" class="nav-link btn btn-link text-dark">AdminDashboard</button>
+                                    </form>
+                                </li>
+                            }
+
+                            @if (User.HasClaim(c => c.Type == "Department" && c.Value == "Sales")){
+                                // Пользователь из отдела продаж
+                            }
+
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="@Url.Action("Login", "Account", new { returnUrl = "/"})">Вход</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="@Url.Action("Register", "Account")">Регистрация</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - ProjectBlock9.Web - <a href="@Url.Action("Privacy", "Home")">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

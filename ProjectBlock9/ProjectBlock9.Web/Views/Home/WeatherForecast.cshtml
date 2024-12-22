@@ -1,0 +1,21 @@
+﻿@using DependencyInjection.Models
+
+@model List<WeatherForecast>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>@item.Summary (@item.Date) - [@item.TemperatureC]</li>
+    }
+</ul>
+
+
+<form asp-action="WeatherForecastPost" asp-controller="Home" method="post">
+    <button type="submit" class="nav-link btn btn-link text-dark">WeatherForecastPost</button>
+</form>
+<form asp-action="WeatherForecastDelete" asp-controller="Home" method="post">
+    <button type="submit" class="nav-link btn btn-link text-dark">WeatherForecastDelete</button>
+</form>
+<form asp-action="WeatherForecastPut" asp-controller="Home" method="post">
+    <button type="submit" class="nav-link btn btn-link text-dark">WeatherForecastPut</button>
+</form>
