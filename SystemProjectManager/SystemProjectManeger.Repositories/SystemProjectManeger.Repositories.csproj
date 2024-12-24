@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SystemProjectManager.Data\SystemProjectManager.Data.csproj" />
+    <ProjectReference Include="..\SystemProjectManager.Models\SystemProjectManager.Models.csproj" />
+  </ItemGroup>
+
+</Project>

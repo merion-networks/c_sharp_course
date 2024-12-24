@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers - Копировать\**" />
+    <Content Remove="Controllers - Копировать\**" />
+    <EmbeddedResource Remove="Controllers - Копировать\**" />
+    <None Remove="Controllers - Копировать\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SystemProjectManager.Data\SystemProjectManager.Data.csproj" />
+    <ProjectReference Include="..\SystemProjectManager.DTOs\SystemProjectManager.DTOs.csproj" />
+    <ProjectReference Include="..\SystemProjectManager.Models\SystemProjectManager.Models.csproj" />
+    <ProjectReference Include="..\SystemProjectManeger.Repositories\SystemProjectManeger.Repositories.csproj" />
+    <ProjectReference Include="..\SystemProjectManeger.Services\SystemProjectManeger.Services.csproj" />
+  </ItemGroup>
+
+</Project>
