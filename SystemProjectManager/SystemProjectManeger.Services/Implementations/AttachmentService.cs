@@ -11,6 +11,9 @@ namespace SystemProjectManeger.Services.Implementations
         private readonly IAttachmentRepository attachmentRepository;
         private readonly IStorageService storageService; // Сервис для работы с хранилищем файлов
 
+        private readonly string[] allowedFileTypes = new[] { ".pdf", ".docx", ".png", ".jpeg", ".jpg" };
+        private const int MaxFileSizeInMb = 10;
+
         public AttachmentService(IAttachmentRepository attachmentRepository, IStorageService storageService)
         {
             this.attachmentRepository = attachmentRepository;
@@ -31,6 +34,15 @@ namespace SystemProjectManeger.Services.Implementations
 
         public async Task<AttachmentDto> UploadAsync(IFormFile file, int taskId)
         {
+            // Проверка размера файла
+            if (file.Length > MaxFileSizeInMb * 1024 * 1024)
+                throw new InvalidOperationException($"Файл превысил лимит {MaxFileSizeInMb}MB.");
+
+            // Проверка типа файла
+            var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            if (!allowedFileTypes.Contains(fileExtension))
+                throw new InvalidOperationException("Тип файла не поддерживается");
+
             // Загрузка файла в хранилище
             string fileUrl = await storageService.UploadFileAsync(file);
 

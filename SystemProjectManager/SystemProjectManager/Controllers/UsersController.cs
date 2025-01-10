@@ -70,6 +70,26 @@ namespace SystemProjectManager.Controllers
             }
         }
 
+        // Получение профиля
+        [Authorize (Roles = "Administrator, Owner")]
+        [HttpGet("getusers")]
+        public async Task<IActionResult> GetUsers()
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var users = await userService.GetUsersAsync();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
+            }
+        }
+
         // Обновление профиля
         [Authorize]
         [HttpPut("profile")]
@@ -90,6 +110,52 @@ namespace SystemProjectManager.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                await userService.ChangePasswordAsync(userId, changePasswordDto);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
 
+        [Authorize(Roles = "Administrator, Owner")]
+        [HttpPut("change-role")]
+        public async Task<IActionResult> ChangeUserRole([FromBody] ChangeUserRoleDto changeRoleDto)
+        {
+            try
+            {
+                var adminUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                await userService.ChangeUserRolesAsync(adminUserId, changeRoleDto);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpPut("avatar")]
+        public async Task<IActionResult> UpdateAvatar(IFormFile avatarFile)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var avatarUrl = await userService.UpdateAvatarAsync(userId, avatarFile);
+                return Ok(new { avatarUrl });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

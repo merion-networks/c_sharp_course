@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using SystemProjectManager.DTOs.Project;
 using SystemProjectManager.DTOs.User;
 using SystemProjectManager.Models.Entities;
 using SystemProjectManeger.Repositories.Interfaces;
@@ -19,11 +21,13 @@ namespace SystemProjectManeger.Services.Implementations
 
         private readonly IUserRepository userRepository;
         private readonly IConfiguration configuration;
+        private readonly IStorageService storageService;
 
-        public UserService(IUserRepository userRepository, IConfiguration configuration)
+        public UserService(IUserRepository userRepository, IConfiguration configuration, IStorageService storageService)
         {
             this.userRepository = userRepository;
             this.configuration = configuration;
+            this.storageService = storageService;
         }
         public async Task<string> AuthenticateAsync(LoginDTO loginDto)
         {
@@ -62,6 +66,47 @@ namespace SystemProjectManeger.Services.Implementations
             return tokenHandler.WriteToken(token);
         }
 
+        public async Task ChangePasswordAsync(int userId, ChangePasswordDto changePasswordDto)
+        {
+            var user = await userRepository.GetByIdAsync(userId);
+            if (user == null)
+            {
+                throw new Exception("Пользователь не найден");
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(changePasswordDto.CurrentPassword, user.PasswordHash))
+            {
+                throw new Exception("Текущий пароль неверный");
+            }
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(changePasswordDto.NewPassword);
+            await userRepository.UpdateAsync(user);
+        }
+
+        public async Task ChangeUserRolesAsync(int adminUserId, ChangeUserRoleDto changeRoleDto)
+        {
+            var user = await userRepository.GetByIdAsync(changeRoleDto.UserId);
+            if (user == null)
+            {
+                throw new Exception("Пользователь не найден");
+            }
+
+            // Очистить существующие роли
+            user.UserRoles.Clear();
+
+            foreach (var roleName in changeRoleDto.NewRoles)
+            {
+                var role = await userRepository.GetAllRoleAsync(roleName);
+                if (role == null)
+                {
+                    throw new Exception($"Роль {roleName} не найдена");
+                }
+                user.UserRoles.Add(new UserRole { Role = role });
+            }
+
+            await userRepository.UpdateAsync(user);
+        }
+
         public async Task<UserDto> GetProfileAsync(int userId)
         {
             var user = await userRepository.GetByIdAsync(userId);
@@ -78,6 +123,33 @@ namespace SystemProjectManeger.Services.Implementations
                 AvatarUrl = user.AvatarUrl,
                 Roles = user.UserRoles.Select(ur => ur.Role.Name).ToList()
             };
+        }
+
+        public async Task<IEnumerable<UserDto>> GetUsersAsync()
+        {
+            var users = await userRepository.GetAllAsync();
+
+            if (users == null)
+            {
+                throw new Exception("Пользователи не найден");
+            }
+
+            var userssDTO = new List<UserDto>();
+
+            foreach (var user in users)
+            {
+                userssDTO.Add(new UserDto()
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    AvatarUrl = user.AvatarUrl,
+                    Roles = user.UserRoles?.Select(ur => ur.RoleId.ToString()).ToList()
+                });
+            }
+
+            return userssDTO;
         }
 
         public async Task<UserDto> RegisterAsync(RegisterDTO registerDto)
@@ -98,7 +170,7 @@ namespace SystemProjectManeger.Services.Implementations
             };
 
             // Добавление роли по умолчанию
-            var defaultRole = new Role { Name = "User" };
+            var defaultRole =  await userRepository.GetAllRoleAsync("User");
 
             user.UserRoles = new List<UserRole> {
                 new UserRole { Role = defaultRole }
@@ -118,6 +190,35 @@ namespace SystemProjectManeger.Services.Implementations
 
         }
 
+        public async Task<string> UpdateAvatarAsync(int userId, IFormFile avatarFile)
+        {
+            var user = await userRepository.GetByIdAsync(userId);
+            if (user == null)
+            {
+                throw new Exception("Пользователь не найден");
+            }
+
+            if (avatarFile == null || avatarFile.Length == 0)
+            {
+                throw new Exception("Файл не выбран");
+            }
+
+            // Если у пользователя уже есть аватар, удаляем старый файл
+            if (!string.IsNullOrEmpty(user.AvatarUrl))
+            {
+                await storageService.DeleteFileAsync(user.AvatarUrl);
+            }
+
+            // Загружаем новый файл
+            string avatarUrl = await storageService.UploadFileAsync(avatarFile);
+
+            // Обновляем URL аватара пользователя
+            user.AvatarUrl = avatarUrl;
+            await userRepository.UpdateAsync(user);
+
+            return avatarUrl;
+        }
+
         public async Task UpdateProfileAsync(int userId, UpdateUserDto updateUserDto)
         {
             var user = await userRepository.GetByIdAsync(userId);
@@ -131,9 +232,9 @@ namespace SystemProjectManeger.Services.Implementations
             user.LastName = updateUserDto.LastName;
             user.AvatarUrl = updateUserDto.AvatarUrl;
 
-
-
             await userRepository.UpdateAsync(user);
         }
+
+
     }
 }

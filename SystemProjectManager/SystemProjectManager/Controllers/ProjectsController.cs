@@ -59,5 +59,48 @@ namespace SystemProjectManager.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Owner, Administrator")]
+        [HttpPost("{projectId}/members")]
+        public async Task<IActionResult> AddProjectMember(int projectId, [FromBody] AddProjectMemberDto memberDto)
+        {
+            var managerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var role = User.FindFirstValue(ClaimTypes.Role);
+            await projectService.AddProjectMemberAsync(projectId, memberDto, managerId, role);
+            return Ok();
+        }
+
+        // Обновление роли участника в проекте
+        [Authorize(Roles = "Owner, Administrator")]
+        [HttpPut("{projectId}/members/{memberId}")]
+        public async Task<IActionResult> UpdateProjectMemberRole(
+            int projectId,
+            int memberId,
+            [FromBody] UpdateProjectMemberRoleDto roleDto)
+        {
+            var managerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var role = User.FindFirstValue(ClaimTypes.Role);
+            await projectService.UpdateProjectMemberRoleAsync(projectId, memberId, roleDto, managerId, role);
+            return Ok();
+        }
+
+        // Удаление участника из проекта
+        [Authorize(Roles = "Owner, Administrator")]
+        [HttpDelete("{projectId}/members/{memberId}")]
+        public async Task<IActionResult> RemoveProjectMember(int projectId, int memberId)
+        {
+            var managerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var role = User.FindFirstValue(ClaimTypes.Role);
+            await projectService.RemoveProjectMemberAsync(projectId, memberId, managerId, role);
+            return NoContent();
+        }
+
+        // Получение списка участников проекта
+        [Authorize]
+        [HttpGet("{projectId}/members")]
+        public async Task<IActionResult> GetProjectMembers(int projectId)
+        {
+            var members = await projectService.GetProjectMembersAsync(projectId);
+            return Ok(members);
+        }
     }
 }

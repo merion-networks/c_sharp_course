@@ -43,7 +43,8 @@ namespace SystemProjectManeger.Repositories.Implementations
 
         public async Task<ProjectTask> GetTaskByIdAsync(int id)
         {
-            return await context.ProjectTasks.FindAsync(id);
+            //return await context.ProjectTasks.FindAsync(id);
+            return await context.ProjectTasks.Include(t=>t.TaskAssignments).FirstOrDefaultAsync(p=> p.Id == id);
         }
 
         public async Task UpdateTaskAsync(ProjectTask task)

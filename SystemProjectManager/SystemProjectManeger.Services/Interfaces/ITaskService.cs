@@ -14,5 +14,6 @@ namespace SystemProjectManeger.Services.Interfaces
         Task CreateTaskAsync(CreateTaskDto dto);
         Task UpdateTaskAsync(int id, UpdateTaskDto dto);
         Task DeleteTaskAsync(int id);
+        Task UpdateTaskStatusAsync(int taskId, string newStatus, int userId, string role);
     }
 }

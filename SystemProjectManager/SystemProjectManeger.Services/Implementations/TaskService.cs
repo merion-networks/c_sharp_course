@@ -33,7 +33,7 @@ namespace SystemProjectManeger.Services.Implementations
                 Status = ProjectTaskStatus.Open, // Устанавливаем статус по умолчанию
                 ProjectId = dto.ProjectId,
                 TaskAssignments = new List<TaskAssignment>(),
-                Attachments = new List<SystemProjectManager.Models.Entities.TaskAttachment>()
+                Attachments = new List<TaskAttachment>()
             };
 
             // Добавляем назначенных пользователей
@@ -161,6 +161,20 @@ namespace SystemProjectManeger.Services.Implementations
                     });
                 }
             }
+            await taskRepository.UpdateTaskAsync(task);
+        }
+
+        public async Task UpdateTaskStatusAsync(int taskId, string newStatus, int userId, string role)
+        {
+            var task = await taskRepository.GetTaskByIdAsync(taskId);
+            if (task == null)
+                throw new KeyNotFoundException($"Задача с идентификатором {taskId} не найдена.");
+
+            if (role != "Administrator" && !task.TaskAssignments.Any(u => u.UserId == userId))            
+                throw new KeyNotFoundException($"У пользователя с идентификатором {userId} нет прав доступа.");
+
+
+            task.Status = (ProjectTaskStatus)Enum.Parse(typeof(ProjectTaskStatus), newStatus, true);
             await taskRepository.UpdateTaskAsync(task);
         }
     }

@@ -25,6 +25,23 @@ namespace SystemProjectManeger.Repositories.Implementations
             await context.SaveChangesAsync();
         }
 
+
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await context.Users
+                .Include(p => p.UserProjects)
+                .Include(p => p.TaskAssignments)
+                .Include(u => u.UserRoles)
+                .ToListAsync();
+        }
+
+        public async Task<Role> GetAllRoleAsync(string roleName)
+        {
+            return await context.Roles
+                .Include(u => u.UserRoles).FirstOrDefaultAsync(r => r.Name == roleName);
+                
+        }
+
         public async Task<User> GetByEmailAsync(string email)
         {
             return await context.Users

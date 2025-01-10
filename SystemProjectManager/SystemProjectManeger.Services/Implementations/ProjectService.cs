@@ -1,4 +1,5 @@
 ﻿using SystemProjectManager.DTOs.Project;
+using SystemProjectManager.DTOs.User;
 using SystemProjectManager.Models.Entities;
 using SystemProjectManager.Models.Enums;
 using SystemProjectManeger.Repositories.Interfaces;
@@ -101,17 +102,13 @@ namespace SystemProjectManeger.Services.Implementations
                 throw new Exception("Проект не найден");
             }
 
-            if (role == "Administrator")
-            {
-                await UpdateAsync(project, updateProjectDto);
-            }
-            else
-            {
-                if (project.UserProjects.FirstOrDefault(u => u.RoleInProject == "Owner")?.UserId != ownerId)
-                    throw new Exception("Нет прав для изменения этого проекта");
+            // Проверка прав доступа
+            if (role != "Administrator" &&
+                project.UserProjects.FirstOrDefault(u => u.RoleInProject == "Owner")?.UserId != ownerId)
+                throw new Exception("Нет прав для изменения этого проекта");
 
-                await UpdateAsync(project, updateProjectDto);
-            }
+            await UpdateAsync(project, updateProjectDto);
+
         }
 
         private async Task UpdateAsync(Project project, UpdateProjectDto updateProjectDto)
@@ -133,19 +130,134 @@ namespace SystemProjectManeger.Services.Implementations
                 throw new Exception("Проект не найден");
             }
 
-
-            if (role == "Administrator")
+            if (role != "Administrator" &&
+                project.UserProjects.FirstOrDefault(u => u.RoleInProject == "Owner")?.UserId != ownerId)
             {
-                await projectRepository.DeleteAsync(project);
+                throw new Exception("Нет прав для удаления этого проекта");
             }
-            else
-            {
-                if (project.UserProjects.FirstOrDefault(u => u.RoleInProject == "Owner")?.UserId != ownerId)
-                    throw new Exception("Нет прав для удаления этого проекта");
 
-                await projectRepository.DeleteAsync(project);
+            // Проверка наличия связанных задач
+            if (project.Tasks != null && project.Tasks.Any())
+            {
+                throw new Exception("Внимание! При удалении проекта будут удалены все связанные задачи. " +
+                    $"Количество задач, которые будут удалены: {project.Tasks.Count}");
             }
+
+            await projectRepository.DeleteAsync(project);
         }
 
+        public async Task<List<UserDto>> GetProjectMembersAsync(int projectId)
+        {
+            var project = await projectRepository.GetByIdAsync(projectId);
+            if (project == null)
+            {
+                throw new Exception("Проект не найден");
+            }
+
+            var members = project.UserProjects.Select(up => new UserDto
+            {
+                Id = up.UserId,
+                FirstName = up.User.FirstName,
+                LastName = up.User.LastName,
+                Email = up.User.Email,
+                Roles = new List<string>() { up.RoleInProject }
+            }).ToList();
+
+            return members;
+        }
+
+        public async Task RemoveProjectMemberAsync(int projectId, int memberId, int managerId, string? role)
+        {
+            var project = await projectRepository.GetByIdAsync(projectId);
+            if (project == null)
+            {
+                throw new Exception("Проект не найден");
+            }
+
+            // Проверка прав доступа
+            if (role != "Administrator" &&
+                project.UserProjects.FirstOrDefault(u => u.RoleInProject == "Owner")?.UserId != managerId)
+            {
+                throw new Exception("Нет прав для управления участниками проекта");
+            }
+
+            var memberToRemove = project.UserProjects.FirstOrDefault(up => up.UserId == memberId);
+            if (memberToRemove == null)
+            {
+                throw new Exception("Участник не найден в проекте");
+            }
+
+            // Нельзя удалить владельца проекта
+            if (memberToRemove.RoleInProject == "Owner")
+            {
+                throw new Exception("Невозможно удалить владельца проекта");
+            }
+
+            project.UserProjects.Remove(memberToRemove);
+            await projectRepository.UpdateAsync(project);
+        }
+
+        public async Task UpdateProjectMemberRoleAsync(int projectId, int memberId, UpdateProjectMemberRoleDto roleDto, int managerId, string? role)
+        {
+            var project = await projectRepository.GetByIdAsync(projectId);
+            if (project == null)
+            {
+                throw new Exception("Проект не найден");
+            }
+
+            // Проверка прав доступа
+            if (role != "Administrator" &&
+                project.UserProjects.FirstOrDefault(u => u.RoleInProject == "Owner")?.UserId != managerId)
+            {
+                throw new Exception("Нет прав для управления ролями участников");
+            }
+
+            var member = project.UserProjects.FirstOrDefault(up => up.UserId == memberId);
+            if (member == null)
+            {
+                throw new Exception("Участник не найден в проекте");
+            }
+
+            // Нельзя изменить роль владельца
+            if (member.RoleInProject == "Owner")
+            {
+                throw new Exception("Невозможно изменить роль владельца проекта");
+            }
+
+            member.RoleInProject = roleDto.NewProjectRole;
+            await projectRepository.UpdateAsync(project);
+        }
+
+        public async Task AddProjectMemberAsync(int projectId, AddProjectMemberDto memberDto, int managerId, string? role)
+        {
+            var project = await projectRepository.GetByIdAsync(projectId);
+            if (project == null)
+            {
+                throw new Exception("Проект не найден");
+            }
+
+            // Проверка прав доступа
+            if (role != "Administrator" &&
+                project.UserProjects.FirstOrDefault(u => u.RoleInProject == "Owner")?.UserId != managerId)
+            {
+                throw new Exception("Нет прав для добавления участников");
+            }
+
+            // Проверка, не является ли пользователь уже участником проекта
+            if (project.UserProjects.Any(up => up.UserId == memberDto.UserId))
+            {
+                throw new Exception("Пользователь уже является участником проекта");
+            }
+
+            var newMember = new UserProject
+            {
+                UserId = memberDto.UserId,
+                ProjectId = projectId,
+                RoleInProject = memberDto.RoleInProject
+            };
+
+            project.UserProjects.Add(newMember);
+            await projectRepository.UpdateAsync(project);
+        }
     }
 }

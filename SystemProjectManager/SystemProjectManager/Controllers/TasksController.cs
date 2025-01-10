@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using SystemProjectManager.DTOs.Task;
 using SystemProjectManager.DTOs.User;
 using SystemProjectManeger.Services.Implementations;
@@ -38,7 +39,7 @@ namespace SystemProjectManager.Controllers
 
 
         [HttpPost("createtask")]
-        public async Task<IActionResult> Register([FromBody] CreateTaskDto createTaskDto)
+        public async Task<IActionResult> CreateTask([FromBody] CreateTaskDto createTaskDto)
         {
             try
             {
@@ -70,6 +71,23 @@ namespace SystemProjectManager.Controllers
         {
             await taskService.DeleteTaskAsync(id);
             return NoContent();
+        }
+
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateTaskStatus(int id, [FromBody] string newStatus)
+        {
+            try
+            {
+                // Проверка прав пользователя (исполнитель или менеджер проекта)
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var role = User.FindFirstValue(ClaimTypes.Role);
+                await taskService.UpdateTaskStatusAsync(id, newStatus, userId, role);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }
