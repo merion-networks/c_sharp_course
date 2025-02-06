@@ -4,10 +4,9 @@
     {
         //Поля (Данные)
 
-        private sealed int speed;
+        private int speed;
         private int mileage;
         public static int totalCar;
-
 
         public int Speed
         {
@@ -24,8 +23,10 @@
         public int Year { get; set; }
 
         //Метод (Поведение)
-
-        public static Car CreateSportCar() { return new Car() { Make = "Ferrary", Year = 2024 }; }
+        public static Car CreateSportCar()
+        {
+            return new Car() { Make = "Ferrary", Year = 2024 };
+        }
 
 
         public void StartEngine()
