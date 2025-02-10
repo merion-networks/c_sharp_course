@@ -1,4 +1,5 @@
-﻿
+﻿using System.Linq
+ 
 int[] numbers = { 99, 9, 3, 4, 3 };
 
 int min = FindMin(numbers);
